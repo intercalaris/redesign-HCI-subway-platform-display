@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NYC Subway Platform Display</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d12;
+    --bg2: #12151e;
+    --bg3: #1a1e2a;
+    --bg4: #222736;
+    --border: #2a2f3d;
+    --text: #f0f2f7;
+    --text-dim: #8890a8;
+    --text-dimmer: #4e5568;
+    --cyan: #38d9f5;
+    --green: #2ecc71;
+    --red: #e74c3c;
+    --blue-panel: #141929;
+    --blue-border: #1e2d50;
+    --active-tab: #1d2c4a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 24px 16px 48px;
+  }
+
+  /* Station selector */
+  .station-selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    background: var(--bg2);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .station-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .station-btn:hover {
+    color: var(--text);
+    background: var(--bg3);
+  }
+
+  .station-btn.active {
+    background: var(--active-tab);
+    color: var(--cyan);
+    border: 1px solid var(--blue-border);
+  }
+
+  /* Main display */
+  .display {
+    width: 100%;
+    max-width: 1000px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  /* Top bar */
+  .top-bar {
+    padding: 18px 24px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: var(--bg3);
+  }
+
+  .station-name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+  }
+
+  .platform-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  .time {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+
+  /* Train panels */
+  .trains {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .train-panel {
+    padding: 20px 22px;
+    border-right: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+
+  .train-panel:last-child {
+    border-right: none;
+  }
+
+  .train-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .line-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    color: white;
+    flex-shrink: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .lc-green { background: #00933c; }
+  .lc-red { background: #ee352e; }
+  .lc-orange { background: #ff6319; }
+  .lc-yellow { background: #fccc0a; color: #1a1a1a; }
+  .lc-gray { background: #808183; }
+  .lc-purple { background: #b933ad; }
+  .lc-blue { background: #0039a6; }
+  .lc-brown { background: #996633; }
+
+  .train-direction {
+    flex: 1;
+  }
+
+  .direction-main {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .direction-via {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .arrivals {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .badge-arriving {
+    background: rgba(46, 204, 113, 0.15);
+    color: var(--green);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+  }
+
+  .badge-time {
+    background: var(--bg3);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  .board-box {
+    background: var(--blue-panel);
+    border: 1px solid var(--blue-border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .board-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1.2px;
+    color: var(--cyan);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .board-item {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .board-item + .board-item {
+    margin-top: 2px;
+    color: var(--text-dim);
+  }
+
+  /* Platform map */
+  .platform-section {
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+    color: var(--text-dimmer);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  .platform-strip {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .platform-strip::-webkit-scrollbar { height: 3px; }
+  .platform-strip::-webkit-scrollbar-track { background: var(--bg3); }
+  .platform-strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .car-connector {
+    height: 2px;
+    width: 6px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .car-box {
+    min-width: 68px;
+    height: 42px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    color: var(--text-dimmer);
+    flex-shrink: 0;
+    transition: all 0.3s;
+    position: relative;
+    text-align: center;
+    padding: 2px 4px;
+    line-height: 1.3;
+  }
+
+  .car-box.you {
+    background: rgba(46, 204, 113, 0.12);
+    border-color: rgba(46, 204, 113, 0.5);
+    color: var(--green);
+  }
+
+  .car-box.xfr {
+    background: rgba(56, 217, 245, 0.1);
+    border-color: rgba(56, 217, 245, 0.4);
+    color: var(--cyan);
+  }
+
+  .staircase-marker {
+    width: 2px;
+    height: 28px;
+    background: var(--text-dimmer);
+    border-radius: 1px;
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+
+  .platform-legend {
+    display: flex;
+    gap: 18px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot-green { background: var(--green); }
+  .dot-cyan { background: var(--cyan); }
+  .dot-gray { background: var(--text-dimmer); }
+
+  /* Nearby transfers */
+  .transfers-section {
+    padding: 20px 22px;
+  }
+
+  .transfer-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .transfer-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .transfer-circles {
+    display: flex;
+    gap: 3px;
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+
+  .tc {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .tc.yellow { background: #fccc0a; color: #1a1a1a; }
+
+  .transfer-name {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .transfer-walk {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .walk-time {
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  .urgency-bar {
+    width: 60px;
+    height: 4px;
+    border-radius: 2px;
+  }
+
+  .urgency-green { background: linear-gradient(90deg, #2ecc71, #27ae60); }
+  .urgency-red { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .trains {
+      grid-template-columns: 1fr;
+    }
+    .train-panel:first-child {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .station-btn {
+      font-size: 12px;
+      padding: 7px 12px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="station-selector">
+  <button class="station-btn active" onclick="setStation(0)">Grand Central 42 St</button>
+  <button class="station-btn" onclick="setStation(1)">Union Sq 14 St</button>
+  <button class="station-btn" onclick="setStation(2)">Fulton St</button>
+</div>
+
+<div class="display">
+  <div class="top-bar">
+    <div>
+      <div class="station-name" id="stationName">Grand Central — 42 St</div>
+      <div class="platform-label" id="platformLabel">Platform B — Uptown 4/5/6</div>
+    </div>
+    <div class="time" id="stationTime">6:49 PM</div>
+  </div>
+
+  <div class="trains" id="trainsContainer"></div>
+
+  <div class="platform-section">
+    <div class="section-label">Platform — You Are Here</div>
+    <div class="platform-strip" id="platformStrip"></div>
+    <div class="platform-legend">
+      <div class="legend-item"><div class="legend-dot dot-green"></div> your current car</div>
+      <div class="legend-item"><div class="legend-dot dot-cyan"></div> best car for transfer</div>
+      <div class="legend-item"><div class="legend-dot dot-gray"></div> staircase</div>
+    </div>
+  </div>
+
+  <div class="transfers-section">
+    <div class="section-label">Nearby Transfers — Walking Time</div>
+    <div id="transfersList"></div>
+  </div>
+</div>
+
+<script>
+const LINE_COLORS = {
+  '1':'lc-red','2':'lc-red','3':'lc-red',
+  '4':'lc-green','5':'lc-green','6':'lc-green',
+  '7':'lc-purple',
+  'A':'lc-blue','C':'lc-blue','E':'lc-blue',
+  'B':'lc-orange','D':'lc-orange','F':'lc-orange','M':'lc-orange',
+  'N':'lc-yellow','Q':'lc-yellow','R':'lc-yellow','W':'lc-yellow',
+  'G':'lc-green',
+  'J':'lc-brown','Z':'lc-brown',
+  'L':'lc-gray',
+  'S':'lc-gray',
+};
+
+const STATIONS = [
+  {
+    name: 'Grand Central — 42 St',
+    platform: 'Platform B — Uptown 4/5/6',
+    time: '6:49 PM',
+    trains: [
+      {
+        lines: ['4'],
+        direction: 'Uptown / Bronx',
+        via: 'via Lexington Ave',
+        arrivals: [{label:'Arriving',type:'arriving'},{label:'8 min',type:'time'},{label:'14 min',type:'time'}],
+        exit: 'Exit at 42 St / Times Square — front 2 cars',
+        transfer: 'Transfer at 86 St — rear cars'
+      },
+      {
+        lines: ['5'],
+        direction: 'Downtown / Brooklyn',
+        via: 'express via Lex',
+        arrivals: [{label:'3 min',type:'time'},{label:'11 min',type:'time'},{label:'19 min',type:'time'}],
+        exit: 'Exit at Fulton St / Financial District — any car',
+        transfer: 'Transfer at Union Sq — middle cars'
+      }
+    ],
+    platform: {
+      cars: 8,
+      you: 3,
+      xfr: [6,7],
+      staircase: 4.5
+    },
+    transfers: [
+      { lines: ['B','D','F'], name: '6 Av / Bryant Pk', walk: '~4 min walk', urgency: 'green' },
+      { lines: ['S'],         name: 'Times Sq Shuttle', walk: '~2 min walk', urgency: 'green' },
+      { lines: ['1','2','3'], name: '7 Av / Times Sq',  walk: '~6 min walk', urgency: 'red' },
+    ]
+  },
+  {
+    name: 'Union Sq — 14 St',
+    platform: 'Platform A — Downtown 4/5/6',
+    time: '6:53 PM',
+    trains: [
+      {
+        lines: ['6'],
+        direction: 'Uptown / Bronx',
+        via: 'local via Lex',
+        arrivals: [{label:'2 min',type:'time'},{label:'9 min',type:'time'},{label:'16 min',type:'time'}],
+        exit: 'Exit at 14 St / Union Square — any car',
+        transfer: 'Transfer at Grand Central — rear cars'
+      },
+      {
+        lines: ['5'],
+        direction: 'Downtown / Brooklyn',
+        via: 'express via Lex',
+        arrivals: [{label:'Arriving',type:'arriving'},{label:'5 min',type:'time'},{label:'12 min',type:'time'}],
+        exit: 'Exit at Fulton St / Financial District — any car',
+        transfer: 'Transfer at Brooklyn Bridge — front cars'
+      }
+    ],
+    platform: {
+      cars: 8,
+      you: 5,
+      xfr: [1,2],
+      staircase: 3.5
+    },
+    transfers: [
+      { lines: ['L'],           name: '14 St / 8th Ave',  walk: '~3 min walk', urgency: 'green' },
+      { lines: ['N','Q','R','W'], name: '14 St / Union Sq', walk: '~1 min walk', urgency: 'green' },
+      { lines: ['F','M'],       name: '14 St / 6th Ave',  walk: '~5 min walk', urgency: 'green' },
+    ]
+  },
+  {
+    name: 'Fulton St',
+    platform: 'Platform C — Downtown 2/3',
+    time: '6:58 PM',
+    trains: [
+      {
+        lines: ['2'],
+        direction: 'Downtown / Brooklyn',
+        via: 'via 7th Ave',
+        arrivals: [{label:'Arriving',type:'arriving'},{label:'7 min',type:'time'}],
+        exit: 'Exit at Fulton St / Financial District — any car',
+        transfer: 'Transfer to A/C/J/Z — follow signs'
+      },
+      {
+        lines: ['3'],
+        direction: 'Uptown / Harlem',
+        via: 'via 7th Ave',
+        arrivals: [{label:'4 min',type:'time'},{label:'11 min',type:'time'}],
+        exit: 'Exit at 34 St / Penn Station — front cars',
+        transfer: 'Transfer at 14 St — rear cars'
+      }
+    ],
+    platform: {
+      cars: 8,
+      you: 4,
+      xfr: [7],
+      staircase: 5.5
+    },
+    transfers: [
+      { lines: ['A','C'],   name: 'Fulton St / Broadway', walk: '~2 min walk', urgency: 'green' },
+      { lines: ['J','Z'],   name: 'Fulton St / Nassau',   walk: '~3 min walk', urgency: 'green' },
+      { lines: ['4','5'],   name: 'Fulton St / Lexington',walk: '~1 min walk', urgency: 'green' },
+    ]
+  }
+];
+
+function lineCircle(line, small=false) {
+  const cls = LINE_COLORS[line] || 'lc-gray';
+  const size = small ? 'tc' : 'line-circle';
+  const extraCls = (line === 'N' || line === 'Q' || line === 'R' || line === 'W' || line === 'S') ? ' yellow' : '';
+  // For yellow lines when small
+  const yellowSmall = small && ['N','Q','R','W','S'].includes(line) ? ' yellow' : '';
+  return `<div class="${size} ${cls}${yellowSmall}">${line}</div>`;
+}
+
+function renderTrains(trains) {
+  return trains.map(t => `
+    <div class="train-panel">
+      <div class="train-header">
+        <div class="line-circle ${LINE_COLORS[t.lines[0]] || 'lc-gray'}">${t.lines[0]}</div>
+        <div class="train-direction">
+          <div class="direction-main">${t.direction}</div>
+          <div class="direction-via">${t.via}</div>
+        </div>
+      </div>
+      <div class="arrivals">
+        ${t.arrivals.map(a => `<span class="badge badge-${a.type === 'arriving' ? 'arriving' : 'time'}">${a.label}</span>`).join('')}
+      </div>
+      <div class="board-box">
+        <div class="board-label">BOARD HERE FOR</div>
+        <div class="board-item">${t.exit}</div>
+        <div class="board-item">${t.transfer}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderPlatform(cfg) {
+  let html = '';
+  for (let i = 1; i <= cfg.cars; i++) {
+    if (i > 1) html += '<div class="car-connector"></div>';
+    // staircase marker between specific cars
+    if (Math.floor(cfg.staircase) === i - 1 && cfg.staircase % 1 !== 0) {
+      html += '<div class="staircase-marker"></div><div class="car-connector"></div>';
+    }
+    let cls = 'car-box';
+    let label = `car ${i}`;
+    if (i === cfg.you) { cls += ' you'; label = `← you`; }
+    else if (cfg.xfr.includes(i)) { cls += ' xfr'; label = 'xfr'; }
+    html += `<div class="${cls}">${label}</div>`;
+  }
+  return html;
+}
+
+function renderTransfers(transfers) {
+  return transfers.map(t => `
+    <div class="transfer-row">
+      <div class="transfer-circles">
+        ${t.lines.map(l => {
+          const cls = LINE_COLORS[l] || 'lc-gray';
+          const isYellow = ['N','Q','R','W'].includes(l);
+          return `<div class="tc ${cls}${isYellow ? ' yellow' : ''}">${l}</div>`;
+        }).join('')}
+      </div>
+      <div class="transfer-name">${t.name}</div>
+      <div class="transfer-walk">
+        <span class="walk-time">${t.walk}</span>
+        <div class="urgency-bar urgency-${t.urgency}"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setStation(idx) {
+  const s = STATIONS[idx];
+  document.getElementById('stationName').textContent = s.name;
+  document.getElementById('platformLabel').textContent = s.platform;
+  document.getElementById('stationTime').textContent = s.time;
+  document.getElementById('trainsContainer').innerHTML = renderTrains(s.trains);
+  document.getElementById('platformStrip').innerHTML = renderPlatform(s.platform);
+  document.getElementById('transfersList').innerHTML = renderTransfers(s.transfers);
+
+  document.querySelectorAll('.station-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === idx);
+  });
+}
+
+// Init
+setStation(0);
+</script>
+</body>
+</html>
