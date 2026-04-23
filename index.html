@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NYC Subway Platform Display — Team KYT</title>
+<title>NYC Subway Platform Display</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -359,7 +359,7 @@
 <body>
 
 <div class="context-header">
-  <div class="context-title">NYC Subway — Platform-End Display</div>
+  <div class="context-title">NYC Subway Platform Display</div>
 
 </div>
 
@@ -383,7 +383,7 @@
     <div class="platform-strip" id="platformStrip"></div>
   </div>
   <div class="transfers-section">
-    <div class="section-label">Nearby Transfers — Walking Time</div>
+    <div class="section-label">Nearby Transfers · Walking Time</div>
     <div id="transfersList"></div>
   </div>
 </div>
@@ -402,8 +402,8 @@ const LINE_COLORS = {
 
 const STATIONS = [
   {
-    name: 'Grand Central — 42 St',
-    platformLabel: 'Platform B — Uptown 4 / 5 / 6',
+    name: 'Grand Central · 42 St',
+    platformLabel: 'Platform B · Uptown 4 / 5 / 6',
     time: '6:49 PM',
     trains: [
       {
@@ -411,16 +411,16 @@ const STATIONS = [
         direction: 'Uptown / Bronx',
         via: 'via Lexington Ave',
         arrivals: [{label:'Arriving',type:'arriving'},{label:'8 min',type:'time'},{label:'14 min',type:'time'}],
-        exit: 'Exit at 42 St / Times Square — front 2 cars',
-        transfer: 'Transfer at 86 St — rear cars'
+        exit: 'Exit at 42 St / Times Square, front 2 cars',
+        transfer: 'Transfer at 86 St, rear cars'
       },
       {
         line: '5',
         direction: 'Downtown / Brooklyn',
         via: 'express via Lexington Ave',
         arrivals: [{label:'3 min',type:'time'},{label:'11 min',type:'time'},{label:'19 min',type:'time'}],
-        exit: 'Exit at Fulton St / Financial District — any car',
-        transfer: 'Transfer at Union Sq — middle cars'
+        exit: 'Exit at Fulton St / Financial District, any car',
+        transfer: 'Transfer at Union Sq, middle cars'
       }
     ],
     platformCfg: { cars: 8, you: 3, boardHere: [6,7], staircase: 4 },
@@ -431,25 +431,25 @@ const STATIONS = [
     ]
   },
   {
-    name: 'Union Sq — 14 St',
-    platformLabel: 'Platform A — Downtown 4 / 5 / 6',
+    name: 'Union Sq · 14 St',
+    platformLabel: 'Platform A · Downtown 4 / 5 / 6',
     time: '6:53 PM',
     trains: [
       {
         line: '6',
         direction: 'Uptown / Bronx',
-        via: 'local via Lex',
+        via: 'local, Lexington Ave',
         arrivals: [{label:'2 min',type:'time'},{label:'9 min',type:'time'},{label:'16 min',type:'time'}],
-        exit: 'Exit at 14 St / Union Square — any car',
-        transfer: 'Transfer at Grand Central — rear cars'
+        exit: 'Exit at 14 St / Union Square, any car',
+        transfer: 'Transfer at Grand Central, rear cars'
       },
       {
         line: '5',
         direction: 'Downtown / Brooklyn',
         via: 'express via Lexington Ave',
         arrivals: [{label:'Arriving',type:'arriving'},{label:'5 min',type:'time'},{label:'12 min',type:'time'}],
-        exit: 'Exit at Fulton St / Financial District — any car',
-        transfer: 'Transfer at Brooklyn Bridge — front cars'
+        exit: 'Exit at Fulton St / Financial District, any car',
+        transfer: 'Transfer at Brooklyn Bridge, front cars'
       }
     ],
     platformCfg: { cars: 8, you: 5, boardHere: [1,2], staircase: 3 },
@@ -461,7 +461,7 @@ const STATIONS = [
   },
   {
     name: 'Fulton St',
-    platformLabel: 'Platform C — Downtown 2 / 3',
+    platformLabel: 'Platform C · Downtown 2 / 3',
     time: '6:58 PM',
     trains: [
       {
@@ -469,16 +469,16 @@ const STATIONS = [
         direction: 'Downtown / Brooklyn',
         via: 'via 7th Ave',
         arrivals: [{label:'Arriving',type:'arriving'},{label:'7 min',type:'time'}],
-        exit: 'Exit at Fulton St / Financial District — any car',
-        transfer: 'Transfer to A / C / J / Z — follow signs'
+        exit: 'Exit at Fulton St / Financial District, any car',
+        transfer: 'Transfer to A / C / J / Z, follow signs'
       },
       {
         line: '3',
         direction: 'Uptown / Harlem',
         via: 'via 7th Ave',
         arrivals: [{label:'4 min',type:'time'},{label:'11 min',type:'time'}],
-        exit: 'Exit at 34 St / Penn Station — front cars',
-        transfer: 'Transfer at 14 St — rear cars'
+        exit: 'Exit at 34 St / Penn Station, front cars',
+        transfer: 'Transfer at 14 St, rear cars'
       }
     ],
     platformCfg: { cars: 8, you: 4, boardHere: [7], staircase: 5 },
