@@ -277,9 +277,12 @@
     border-color: rgba(46,204,113,0.5);
     color: var(--green);
   }
-
-  /* board-here cars: color set dynamically via inline style */
+  .car-box.board-here {
+    background: rgba(56,217,245,0.1);
+    border-color: rgba(56,217,245,0.4);
+  }
   .car-box.board-here .car-num { color: var(--text-dim); }
+  .car-box.board-here .car-sublabel { color: var(--cyan); }
 
   .staircase-wrap {
     display: flex;
@@ -520,13 +523,7 @@ function renderTrains(trains) {
   }).join('');
 }
 
-function renderPlatform(cfg, trains) {
-  // collect board-here car color per train panel index
-  // both trains share the same platform, color the board-here cars
-  // by the line of the first train that references them (simplified: use train[0] line color)
-  const lineClass = lc(trains[0].line);
-  const r = raw(trains[0].line);
-
+function renderPlatform(cfg) {
   let html = '';
   for (let i = 1; i <= cfg.cars; i++) {
     if (i > 1) html += '<div class="car-connector"></div>';
@@ -542,7 +539,6 @@ function renderPlatform(cfg, trains) {
 
     let cls = 'car-box';
     let sublabel = '';
-    let inlineStyle = '';
 
     if (i === cfg.you) {
       cls += ' you';
@@ -550,13 +546,12 @@ function renderPlatform(cfg, trains) {
     } else if (cfg.boardHere.includes(i)) {
       cls += ' board-here';
       sublabel = 'BOARD';
-      inlineStyle = `style="background: rgba(${r.rgb},0.15); border-color: rgba(${r.rgb},0.5);"`;
     }
 
     html += `
-      <div class="${cls}" ${inlineStyle}>
+      <div class="${cls}">
         <div class="car-num">car ${i}</div>
-        ${sublabel ? `<div class="car-sublabel" ${sublabel === 'BOARD' ? `style="color:${r.bg};"` : ''}}>${sublabel}</div>` : ''}
+        ${sublabel ? `<div class="car-sublabel">${sublabel}</div>` : ''}
       </div>`;
   }
   return html;
@@ -583,7 +578,7 @@ function setStation(idx) {
   document.getElementById('platformLabel').textContent = s.platformLabel;
   document.getElementById('stationTime').textContent = s.time;
   document.getElementById('trainsContainer').innerHTML = renderTrains(s.trains);
-  document.getElementById('platformStrip').innerHTML = renderPlatform(s.platformCfg, s.trains);
+  document.getElementById('platformStrip').innerHTML = renderPlatform(s.platformCfg);
   document.getElementById('transfersList').innerHTML = renderTransfers(s.transfers);
   document.querySelectorAll('.station-btn').forEach((btn, i) => {
     btn.classList.toggle('active', i === idx);
