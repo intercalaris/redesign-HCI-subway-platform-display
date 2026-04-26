@@ -32,29 +32,24 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 28px 16px 56px;
+    padding: 32px 24px 64px;
   }
 
-  .context-header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
+  .context-header { text-align: center; margin-bottom: 24px; }
   .context-title {
-    font-size: 13px;
+    font-size: 14px;
     font-family: 'DM Mono', monospace;
     letter-spacing: 1.5px;
     color: var(--text-dimmer);
     text-transform: uppercase;
-    margin-bottom: 4px;
   }
-  .context-sub { display: none; }
 
   .station-selector {
     display: flex;
     gap: 6px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     background: var(--bg2);
-    padding: 5px;
+    padding: 6px;
     border-radius: 12px;
     border: 1px solid var(--border);
     flex-wrap: wrap;
@@ -65,9 +60,9 @@
     border: 1px solid transparent;
     color: var(--text-dim);
     font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 500;
-    padding: 8px 16px;
+    padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.18s;
@@ -82,7 +77,7 @@
 
   .display {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1300px;
     background: var(--bg2);
     border: 1px solid var(--border);
     border-radius: 16px;
@@ -90,7 +85,7 @@
   }
 
   .top-bar {
-    padding: 18px 24px 14px;
+    padding: 22px 32px 18px;
     border-bottom: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
@@ -98,21 +93,21 @@
     background: var(--bg3);
   }
   .station-name {
-    font-size: 22px;
+    font-size: 28px;
     font-weight: 700;
     letter-spacing: -0.3px;
     line-height: 1.2;
   }
   .platform-label {
-    font-size: 12px;
+    font-size: 15px;
     color: var(--text-dim);
-    margin-top: 3px;
+    margin-top: 4px;
     font-family: 'DM Mono', monospace;
     letter-spacing: 0.3px;
   }
   .time {
     font-family: 'DM Mono', monospace;
-    font-size: 18px;
+    font-size: 22px;
     color: var(--text-dim);
     font-weight: 500;
   }
@@ -123,7 +118,7 @@
     border-bottom: 1px solid var(--border);
   }
   .train-panel {
-    padding: 20px 22px;
+    padding: 26px 30px;
     border-right: 1px solid var(--border);
   }
   .train-panel:last-child { border-right: none; }
@@ -131,18 +126,18 @@
   .train-header {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 14px;
+    margin-bottom: 14px;
   }
   .line-circle {
-    width: 36px;
-    height: 36px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 17px;
+    font-size: 22px;
     flex-shrink: 0;
     font-family: 'DM Sans', sans-serif;
   }
@@ -155,20 +150,30 @@
   .lc-blue   { background: #0039a6; color: #fff; }
   .lc-brown  { background: #996633; color: #fff; }
 
+  /* Raw color values for dynamic styling */
+  .raw-red    { --line-color: #ee352e; --line-color-rgb: 238,53,46; --line-text: #fff; }
+  .raw-green  { --line-color: #00933c; --line-color-rgb: 0,147,60;  --line-text: #fff; }
+  .raw-orange { --line-color: #ff6319; --line-color-rgb: 255,99,25; --line-text: #fff; }
+  .raw-yellow { --line-color: #fccc0a; --line-color-rgb: 252,204,10;--line-text: #1a1a1a; }
+  .raw-gray   { --line-color: #808183; --line-color-rgb: 128,129,131;--line-text:#fff; }
+  .raw-purple { --line-color: #b933ad; --line-color-rgb: 185,51,173;--line-text: #fff; }
+  .raw-blue   { --line-color: #0039a6; --line-color-rgb: 0,57,166;  --line-text: #fff; }
+  .raw-brown  { --line-color: #996633; --line-color-rgb: 153,102,51;--line-text: #fff; }
+
   .train-direction { flex: 1; }
-  .direction-main { font-size: 16px; font-weight: 700; line-height: 1.2; }
-  .direction-via { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+  .direction-main { font-size: 20px; font-weight: 700; line-height: 1.2; }
+  .direction-via { font-size: 14px; color: var(--text-dim); margin-top: 3px; }
 
   .arrivals {
     display: flex;
-    gap: 6px;
-    margin-bottom: 14px;
+    gap: 8px;
+    margin-bottom: 18px;
     flex-wrap: wrap;
   }
   .badge {
-    padding: 4px 10px;
+    padding: 5px 14px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     font-family: 'DM Mono', monospace;
   }
@@ -184,43 +189,42 @@
   }
 
   .board-box {
-    background: var(--blue-panel);
-    border: 1px solid var(--blue-border);
-    border-radius: 8px;
-    padding: 12px 14px;
+    border-radius: 10px;
+    padding: 16px 18px;
+    border: 1px solid;
+    /* color set dynamically via inline style */
   }
   .board-label {
-    font-size: 10px;
+    font-size: 11px;
     font-family: 'DM Mono', monospace;
-    letter-spacing: 1.2px;
-    color: var(--cyan);
-    margin-bottom: 8px;
-    font-weight: 500;
+    letter-spacing: 1.4px;
+    margin-bottom: 10px;
+    font-weight: 600;
   }
   .board-exit {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--text);
     line-height: 1.5;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
   }
   .board-transfer {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 400;
     color: var(--text-dim);
     line-height: 1.5;
   }
 
   .platform-section {
-    padding: 20px 22px;
+    padding: 24px 32px;
     border-bottom: 1px solid var(--border);
   }
   .section-label {
-    font-size: 10px;
+    font-size: 11px;
     font-family: 'DM Mono', monospace;
     letter-spacing: 1.5px;
     color: var(--text-dimmer);
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     text-transform: uppercase;
   }
 
@@ -236,15 +240,15 @@
 
   .car-connector {
     height: 3px;
-    width: 8px;
+    width: 10px;
     background: var(--border);
     flex-shrink: 0;
   }
 
   .car-box {
-    min-width: 74px;
-    height: 52px;
-    border-radius: 6px;
+    min-width: 90px;
+    height: 62px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -255,16 +259,16 @@
     color: var(--text-dimmer);
     flex-shrink: 0;
     transition: all 0.25s;
-    padding: 4px 6px;
-    gap: 3px;
+    padding: 4px 8px;
+    gap: 4px;
   }
   .car-num {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 500;
     line-height: 1;
   }
   .car-sublabel {
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.8px;
     line-height: 1;
@@ -276,83 +280,70 @@
     border-color: rgba(46,204,113,0.5);
     color: var(--green);
   }
-  .car-box.board-here {
-    background: rgba(56,217,245,0.1);
-    border-color: rgba(56,217,245,0.4);
-  }
+
+  /* board-here cars: color set dynamically via inline style */
   .car-box.board-here .car-num { color: var(--text-dim); }
-  .car-box.board-here .car-sublabel { color: var(--cyan); }
 
   .staircase-wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
-    padding: 0 5px;
-    gap: 3px;
+    padding: 0 6px;
   }
   .staircase-marker {
     width: 3px;
-    height: 30px;
+    height: 36px;
     background: var(--text-dimmer);
     border-radius: 1px;
     opacity: 0.4;
   }
-  .staircase-label {
-    font-size: 8px;
-    font-family: 'DM Mono', monospace;
-    color: var(--text-dimmer);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
 
-
-
-  .transfers-section { padding: 20px 22px; }
+  .transfers-section { padding: 24px 32px; }
   .transfer-row {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 10px 0;
+    gap: 16px;
+    padding: 12px 0;
     border-bottom: 1px solid var(--border);
   }
   .transfer-row:last-child { border-bottom: none; padding-bottom: 0; }
 
   .transfer-circles {
     display: flex;
-    gap: 4px;
+    gap: 5px;
     flex-shrink: 0;
-    min-width: 80px;
+    min-width: 90px;
   }
   .tc {
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     flex-shrink: 0;
     font-family: 'DM Sans', sans-serif;
   }
 
-  .transfer-name { flex: 1; font-size: 14px; font-weight: 500; }
-  .transfer-walk { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .transfer-name { flex: 1; font-size: 17px; font-weight: 500; }
+  .transfer-walk { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
   .walk-time {
-    font-size: 13px;
+    font-size: 15px;
     font-family: 'DM Mono', monospace;
     color: var(--text-dim);
     white-space: nowrap;
   }
-  .urgency-bar { width: 56px; height: 4px; border-radius: 2px; }
+  .urgency-bar { width: 64px; height: 4px; border-radius: 2px; }
   .urgency-green { background: linear-gradient(90deg, #2ecc71, #27ae60); }
   .urgency-red   { background: linear-gradient(90deg, #e74c3c, #c0392b); }
 
-  @media (max-width: 620px) {
+  @media (max-width: 700px) {
     .trains { grid-template-columns: 1fr; }
     .train-panel:first-child { border-right: none; border-bottom: 1px solid var(--border); }
-    .top-bar { flex-direction: column; gap: 6px; }
+    .top-bar { flex-direction: column; gap: 8px; }
   }
 </style>
 </head>
@@ -360,7 +351,6 @@
 
 <div class="context-header">
   <div class="context-title">NYC Subway Platform Display</div>
-
 </div>
 
 <div class="station-selector">
@@ -398,6 +388,17 @@ const LINE_COLORS = {
   'N':'lc-yellow','Q':'lc-yellow','R':'lc-yellow','W':'lc-yellow',
   'G':'lc-green','J':'lc-brown','Z':'lc-brown',
   'L':'lc-gray','S':'lc-gray',
+};
+
+const LINE_RAW = {
+  'lc-red':    { bg: '#ee352e', rgb: '238,53,46',   text: '#fff'     },
+  'lc-green':  { bg: '#00933c', rgb: '0,147,60',    text: '#fff'     },
+  'lc-orange': { bg: '#ff6319', rgb: '255,99,25',   text: '#fff'     },
+  'lc-yellow': { bg: '#fccc0a', rgb: '252,204,10',  text: '#1a1a1a'  },
+  'lc-gray':   { bg: '#808183', rgb: '128,129,131', text: '#fff'     },
+  'lc-purple': { bg: '#b933ad', rgb: '185,51,173',  text: '#fff'     },
+  'lc-blue':   { bg: '#0039a6', rgb: '0,57,166',    text: '#fff'     },
+  'lc-brown':  { bg: '#996633', rgb: '153,102,51',  text: '#fff'     },
 };
 
 const STATIONS = [
@@ -491,9 +492,14 @@ const STATIONS = [
 ];
 
 function lc(line) { return LINE_COLORS[line] || 'lc-gray'; }
+function raw(line) { return LINE_RAW[lc(line)]; }
 
 function renderTrains(trains) {
-  return trains.map(t => `
+  return trains.map(t => {
+    const r = raw(t.line);
+    const boardBoxStyle = `background: rgba(${r.rgb},0.12); border-color: rgba(${r.rgb},0.4);`;
+    const labelStyle = `color: ${r.bg};`;
+    return `
     <div class="train-panel">
       <div class="train-header">
         <div class="line-circle ${lc(t.line)}">${t.line}</div>
@@ -507,16 +513,23 @@ function renderTrains(trains) {
           `<span class="badge badge-${a.type === 'arriving' ? 'arriving' : 'time'}">${a.label}</span>`
         ).join('')}
       </div>
-      <div class="board-box">
-        <div class="board-label">BOARD HERE FOR</div>
+      <div class="board-box" style="${boardBoxStyle}">
+        <div class="board-label" style="${labelStyle}">BOARD HERE FOR</div>
         <div class="board-exit">${t.exit}</div>
         <div class="board-transfer">${t.transfer}</div>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
-function renderPlatform(cfg) {
+function renderPlatform(cfg, trains) {
+  // collect board-here car color per train panel index
+  // both trains share the same platform, color the board-here cars
+  // by the line of the first train that references them (simplified: use train[0] line color)
+  const lineClass = lc(trains[0].line);
+  const r = raw(trains[0].line);
+
   let html = '';
   for (let i = 1; i <= cfg.cars; i++) {
     if (i > 1) html += '<div class="car-connector"></div>';
@@ -525,25 +538,28 @@ function renderPlatform(cfg) {
       html = html.slice(0, html.lastIndexOf('<div class="car-connector"></div>'));
       html += `
         <div class="car-connector"></div>
-        <div class="staircase-wrap">
-          <div class="staircase-marker"></div>
-        </div>
+        <div class="staircase-wrap"><div class="staircase-marker"></div></div>
         <div class="car-connector"></div>
       `;
     }
 
     let cls = 'car-box';
     let sublabel = '';
+    let inlineStyle = '';
+
     if (i === cfg.you) {
-      cls += ' you'; sublabel = 'YOU';
+      cls += ' you';
+      sublabel = 'YOU';
     } else if (cfg.boardHere.includes(i)) {
-      cls += ' board-here'; sublabel = 'BOARD';
+      cls += ' board-here';
+      sublabel = 'BOARD';
+      inlineStyle = `style="background: rgba(${r.rgb},0.15); border-color: rgba(${r.rgb},0.5);"`;
     }
 
     html += `
-      <div class="${cls}">
+      <div class="${cls}" ${inlineStyle}>
         <div class="car-num">car ${i}</div>
-        ${sublabel ? `<div class="car-sublabel">${sublabel}</div>` : ''}
+        ${sublabel ? `<div class="car-sublabel" ${sublabel === 'BOARD' ? `style="color:${r.bg};"` : ''}}>${sublabel}</div>` : ''}
       </div>`;
   }
   return html;
@@ -570,7 +586,7 @@ function setStation(idx) {
   document.getElementById('platformLabel').textContent = s.platformLabel;
   document.getElementById('stationTime').textContent = s.time;
   document.getElementById('trainsContainer').innerHTML = renderTrains(s.trains);
-  document.getElementById('platformStrip').innerHTML = renderPlatform(s.platformCfg);
+  document.getElementById('platformStrip').innerHTML = renderPlatform(s.platformCfg, s.trains);
   document.getElementById('transfersList').innerHTML = renderTransfers(s.transfers);
   document.querySelectorAll('.station-btn').forEach((btn, i) => {
     btn.classList.toggle('active', i === idx);
